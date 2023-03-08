@@ -2,7 +2,7 @@
 
 import openai
 
-OPENAI_KEY = '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'
+OPENAI_KEY = ''
 MODEL_NAME = 'text-davinci-003'
 openai.api_key = OPENAI_KEY
 
