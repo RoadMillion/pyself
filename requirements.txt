@@ -1,0 +1,11 @@
+openai~=0.25.0
+requests
+pyowm~=3.3.0
+pymysql~=1.0.2
+jieba~=0.42.1
+Pillow~=9.4.0
+numpy~=1.23.5
+matplotlib~=3.6.3
+numpy~=1.23.5
+pyChatGPT
+openpyxl~=3.0.10
