@@ -9,3 +9,9 @@ matplotlib~=3.6.3
 numpy~=1.23.5
 pyChatGPT
 openpyxl~=3.0.10
+pandas~=1.5.2
+schedule~=1.2.0
+tqdm~=4.62.3
+gitpython~=3.1.24
+paramiko
+scp

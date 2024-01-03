@@ -15,8 +15,7 @@ class JsonCustomEncoder(json.JSONEncoder):
 
 
 class DataProcessor(object):
-    fields = ('name', 'port', 'port_area', 'biz_type', 'size', 'charge_type', 'grade', 'price', 'effect_date',
-              'price_type', 'oil_rate', 'is_sync_weight')
+    fields = ('port', 'port_district', 'door_area', 'truck_type', 'outward_price', 'homeward_price', 'effect_date')
 
     # 无参构造函数
     def __init__(self):
@@ -29,7 +28,7 @@ class DataProcessor(object):
 
 # read xlsx file
 # get workbook
-sourceWorkbook = openpyxl.load_workbook('../files/鸭嘴兽应付费用导入模板.xlsx')
+sourceWorkbook = openpyxl.load_workbook('../files/鸭嘴兽ETC标准报价导入模板.xlsx')
 # get sheet by index
 worksheet = sourceWorkbook.worksheets[0]
 # get all rows
@@ -47,35 +46,21 @@ for row_index, row in enumerate(rows):
     # 遍历所有列, 带索引，从第3行开始
     data = DataProcessor()
     for index, cell in enumerate(row):
-        if index == 1:
-            data.name = cell.value
-        elif index == 2:
+        if index == 0:
             data.port = cell.value
+        elif index == 1:
+            data.port_district = cell.value
+        elif index == 2:
+            data.door_area = cell.value
         elif index == 3:
-            data.port_area = cell.value
+            data.truck_type = cell.value
         elif index == 4:
-            data.biz_type = cell.value
+            data.outward_price = str(cell.value)
         elif index == 5:
-            data.size = cell.value
+            data.homeward_price = str(cell.value)
         elif index == 6:
-            data.charge_type = cell.value
-        elif index == 7:
-            data.grade = cell.value
-        elif index == 8:
-            if cell.value:
-                data.price = str(cell.value)
-        elif index == 9:
-            # turn datetime to string
-            if cell.value:
-                data.effect_date = cell.value.strftime('%Y/%m/%d')
-                continue
-            data.effect_date = cell.value
-        elif index == 10:
-            data.price_type = cell.value
-        elif index == 11:
-            data.oil_rate = cell.value
-        elif index == 12:
-            data.is_sync_weight = cell.value
+            data.effect_date = cell.value.strftime('%Y/%m/%d')
+
     source_data_list.append(data)
 
 door_names_sheet = sourceWorkbook.worksheets[1]
@@ -96,13 +81,11 @@ new_sheet = new.create_sheet('Sheet1', 0)
 new_sheet.append([])
 new_sheet.append(heads)
 # 前1000个数据
-for door_name in door_names[:1000]:
-    port = "NINGBO" if "宁波" in door_name else "SHANGHAI"
-    port_area = "北仑" if "宁波" in door_name else "外港"
+for door_name in door_names:
     for index, data in enumerate(source_data_list):
         new_sheet.append(
-            ["", door_name, port, port_area, data.biz_type, data.size, data.charge_type, data.grade,
-             data.price, data.effect_date, data.price_type, data.oil_rate, data.is_sync_weight])
+            [data.port, data.port_district, door_name, data.truck_type, data.outward_price, data.homeward_price,
+             data.effect_date])
 # 设置列宽
 new_sheet.column_dimensions['A'].width = 20
 new_sheet.column_dimensions['B'].width = 20
@@ -110,16 +93,9 @@ new_sheet.column_dimensions['C'].width = 20
 new_sheet.column_dimensions['D'].width = 20
 new_sheet.column_dimensions['E'].width = 20
 new_sheet.column_dimensions['F'].width = 20
-new_sheet.column_dimensions['G'].width = 20
-new_sheet.column_dimensions['H'].width = 20
-new_sheet.column_dimensions['I'].width = 20
-new_sheet.column_dimensions['J'].width = 20
-new_sheet.column_dimensions['K'].width = 20
-new_sheet.column_dimensions['L'].width = 20
-new_sheet.column_dimensions['M'].width = 20
-new_sheet.column_dimensions['N'].width = 20
+
 # save new workbook
 
-new.save('../files/new_big.xlsx')
+new.save('../files/newetc.xlsx')
 
 sourceWorkbook.close()
