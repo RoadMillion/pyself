@@ -137,3 +137,4 @@ files/*.xlsx
 
 ### JRebel ###
 rebel.xml
+/files/merge/

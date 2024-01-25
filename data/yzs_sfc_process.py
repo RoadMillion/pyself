@@ -22,6 +22,6 @@ def process_excel(file_path, output_path):
     df.to_excel(output_path, index=False)
 
 # Example usage
-file_path = 'path_to_your_input_file.xlsx'  # Replace with your input file path
-output_path = 'path_to_your_output_file.xlsx'  # Replace with your desired output file path
+file_path = '../files/99.xlsx'  # Replace with your input file path
+output_path = 'out.xlsx'  # Replace with your desired output file path
 process_excel(file_path, output_path)
